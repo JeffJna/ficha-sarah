@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha Sarah — Glúteo & Força</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0a0f;
+    --surface: #13101a;
+    --surface2: #1a1525;
+    --border: #241e30;
+    --accent: #e040fb;
+    --accent2: #f48fb1;
+    --accent3: #ce93d8;
+    --text: #f0e8f5;
+    --muted: #7a6e87;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(224,64,251,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 10% 80%, rgba(244,143,177,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  .hero {
+    padding: 72px 40px 56px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 160px;
+    color: var(--border);
+    white-space: nowrap;
+    letter-spacing: 6px;
+    pointer-events: none;
+    line-height: 1;
+    opacity: 0.6;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.4; transform:scale(0.7); }
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 9vw, 100px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta-value { font-size: 14px; font-weight: 600; }
+
+  /* Nav */
+  .week-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 2;
+  }
+  .week-nav::-webkit-scrollbar { display: none; }
+
+  .day-tab {
+    flex: 1;
+    min-width: 110px;
+    padding: 18px 20px;
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+    position: relative;
+  }
+  .day-tab:last-child { border-right: none; }
+  .day-tab:hover { background: var(--surface); }
+  .day-tab.active { background: var(--surface); }
+  .day-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .day-tab.rest-tab.active::after { background: var(--muted); }
+
+  .tab-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .tab-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+
+  .tab-type {
+    font-size: 10px;
+    font-weight: 500;
+    margin-top: 5px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .tag-gluteo  { background: rgba(224,64,251,0.15); color: var(--accent); }
+  .tag-costas  { background: rgba(244,143,177,0.15); color: var(--accent2); }
+  .tag-quad    { background: rgba(206,147,216,0.15); color: var(--accent3); }
+  .tag-upper   { background: rgba(224,64,251,0.10); color: var(--accent); }
+  .tag-pump    { background: rgba(244,143,177,0.20); color: var(--accent2); }
+  .tag-rest    { background: rgba(255,255,255,0.05); color: var(--muted); }
+
+  /* Content */
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .day-panel { display: none; animation: fadeUp 0.3s ease; }
+  .day-panel.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .day-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 44px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .day-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(34px, 5.5vw, 60px);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .day-title em { color: var(--accent); font-style: normal; }
+  .day-title.costas em { color: var(--accent2); }
+  .day-title.quad em   { color: var(--accent3); }
+  .day-title.upper em  { color: var(--accent); }
+  .day-title.pump em   { color: var(--accent2); }
+
+  .day-stats { display: flex; gap: 16px; }
+
+  .stat-box {
+    border: 1px solid var(--border);
+    padding: 12px 18px;
+    text-align: center;
+    min-width: 72px;
+    background: var(--surface);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* Blocks */
+  .block { margin-bottom: 36px; }
+
+  .block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .block-label::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    flex-shrink: 0;
+  }
+
+  .block.costas .block-label::before  { background: var(--accent2); }
+  .block.quad .block-label::before    { background: var(--accent3); }
+  .block.neutral .block-label::before { background: var(--muted); }
+  .block.pump .block-label::before    { background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+
+  /* Exercises */
+  .exercise {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .exercise:last-child { border-bottom: none; }
+
+  .exercise:hover .ex-name { color: var(--accent); }
+  .exercise.costas:hover .ex-name { color: var(--accent2); }
+  .exercise.quad:hover .ex-name { color: var(--accent3); }
+  .exercise.pump:hover .ex-name { color: var(--accent2); }
+
+  .ex-name {
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ex-tag {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .ex-note {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    background: rgba(224,64,251,0.1);
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .ex-note.pink { color: var(--accent2); background: rgba(244,143,177,0.1); }
+
+  .ex-sets {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .ex-reps {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 21px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    min-width: 76px;
+    text-align: right;
+  }
+
+  .exercise.costas .ex-reps  { color: var(--accent2); }
+  .exercise.quad .ex-reps    { color: var(--accent3); }
+  .exercise.pump .ex-reps    { color: var(--accent2); }
+  .exercise.neutral .ex-reps { color: var(--muted); }
+
+  /* Rest */
+  .rest-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .rest-icon { font-size: 56px; margin-bottom: 8px; }
+
+  .rest-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 4px;
+    color: var(--muted);
+  }
+
+  .rest-sub {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 380px;
+    line-height: 1.75;
+  }
+
+  /* Tips */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-top: 44px;
+    border: 1px solid var(--border);
+  }
+
+  .tip { background: var(--surface); padding: 22px; }
+  .tip-icon { font-size: 18px; margin-bottom: 8px; }
+
+  .tip-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .tip p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* Overload */
+  .overload-box {
+    margin-top: 48px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .overload-header {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 13px 24px;
+  }
+
+  .overload-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .overload-item { background: var(--surface); padding: 18px 22px; }
+
+  .overload-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .overload-desc { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.6; }
+
+  /* Divider label */
+  .section-divider {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 32px 0 8px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 44px 20px 36px; }
+    .content { padding: 28px 18px; }
+    .hero-bg-text { display: none; }
+    .exercise { grid-template-columns: 1fr auto; }
+    .ex-sets { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Ficha Sarah — Nota 10</div>
+  <h1>GLÚTEO &<br><span>FORÇA</span></h1>
+  <p class="hero-sub">Dupla frequência de glúteo · Corpo completo · 5×/semana</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Foco</span>
+      <span class="meta-value">Glúteo + Posterior</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Split</span>
+      <span class="meta-value">5× / semana</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Freq. Glúteo</span>
+      <span class="meta-value">2× / semana</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Metodologia</span>
+      <span class="meta-value">Força + Volume/Pump</span>
+    </div>
+  </div>
+  <div class="hero-bg-text">SARAH</div>
+</div>
+
+<!-- Nav -->
+<nav class="week-nav">
+  <div class="day-tab active" onclick="showDay('seg')">
+    <div class="tab-day">Segunda</div>
+    <div class="tab-name">Glúteo<br>Força</div>
+    <span class="tab-type tag-gluteo">Neural</span>
+  </div>
+  <div class="day-tab" onclick="showDay('ter')">
+    <div class="tab-day">Terça</div>
+    <div class="tab-name">Costas<br>+ Bíceps</div>
+    <span class="tab-type tag-costas">Volume</span>
+  </div>
+  <div class="day-tab" onclick="showDay('qua')">
+    <div class="tab-day">Quarta</div>
+    <div class="tab-name">Quad<br>+ Glúteo</div>
+    <span class="tab-type tag-quad">Força/Vol</span>
+  </div>
+  <div class="day-tab" onclick="showDay('qui')">
+    <div class="tab-day">Quinta</div>
+    <div class="tab-name">Upper<br>Completo</div>
+    <span class="tab-type tag-upper">Volume</span>
+  </div>
+  <div class="day-tab" onclick="showDay('sex')">
+    <div class="tab-day">Sexta</div>
+    <div class="tab-name">Glúteo<br>Pump</div>
+    <span class="tab-type tag-pump">Pump</span>
+  </div>
+  <div class="day-tab rest-tab" onclick="showDay('fds')">
+    <div class="tab-day">Sáb + Dom</div>
+    <div class="tab-name">Descanso<br>Total</div>
+    <span class="tab-type tag-rest">Rest</span>
+  </div>
+</nav>
+
+<div class="content">
+
+  <!-- SEGUNDA — GLÚTEO FORÇA -->
+  <div class="day-panel active" id="seg">
+    <div class="day-header">
+      <div class="day-title">GLÚTEO <em>FORÇA</em></div>
+      <div class="day-stats">
+        <div class="stat-box">
+          <div class="stat-num">24</div>
+          <div class="stat-label">Séries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">6–10</div>
+          <div class="stat-label">Rep range</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">2–3</div>
+          <div class="stat-label">Min descanso</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Glúteo — Tensão Máxima</div>
+      <div class="exercise">
+        <div class="ex-name">Hip Thrust com Barra <span class="ex-tag">principal</span> <span class="ex-note">segura 1s no topo</span></div>
+        <div class="ex-sets">5 séries</div>
+        <div class="ex-reps">5–8</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Glute Bridge na Máquina <span class="ex-tag">acessório</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Abdutora com Carga Alta <span class="ex-tag">glúteo médio</span> <span class="ex-note">segura 2s</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Posterior de Coxa</div>
+      <div class="exercise">
+        <div class="ex-name">Levantamento Terra Sumô <span class="ex-tag">principal</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">5–7</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Stiff com Barra <span class="ex-tag">isquio + glúteo</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Mesa Flexora <span class="ex-tag">isolamento</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+    </div>
+
+    <div class="block neutral">
+      <div class="block-label">Core — Estabilização</div>
+      <div class="exercise neutral">
+        <div class="ex-name">Prancha com Carga <span class="ex-tag">core anti-extensão</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps neutral">30–45s</div>
+      </div>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">🔥</div>
+        <div class="tip-title">Hip Thrust</div>
+        <p>Joelho a 90° no topo. Empurre o chão com os calcanhares, não com as pontas dos pés. Quadril sobe, lombar não arqueia.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">⚡</div>
+        <div class="tip-title">Sumô</div>
+        <p>Pés afastados e virados para fora. Empurre os joelhos para fora durante todo o movimento — ativa mais glúteo médio.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">⏱</div>
+        <div class="tip-title">Descanso</div>
+        <p>2–3 min nos compostos pesados. Glúteo precisa de recuperação para dar tudo nas séries seguintes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERÇA — COSTAS + BÍCEPS -->
+  <div class="day-panel" id="ter">
+    <div class="day-header">
+      <div class="day-title costas">COSTAS <em>+ BÍCEPS</em></div>
+      <div class="day-stats">
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">26</div>
+          <div class="stat-label">Séries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">8–12</div>
+          <div class="stat-label">Rep range</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">90s–2</div>
+          <div class="stat-label">Min descanso</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block costas">
+      <div class="block-label">Costas — Largura</div>
+      <div class="exercise costas">
+        <div class="ex-name">Pulldown Pegada Larga <span class="ex-tag">grande dorsal</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise costas">
+        <div class="ex-name">Pulldown Unilateral no Cabo <span class="ex-tag">unilateral</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+    </div>
+
+    <div class="block costas">
+      <div class="block-label">Costas — Espessura</div>
+      <div class="exercise costas">
+        <div class="ex-name">Remada Curvada com Barra <span class="ex-tag">principal</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">6–8</div>
+      </div>
+      <div class="exercise costas">
+        <div class="ex-name">Remada Sentada no Cabo <span class="ex-tag">volume</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+      <div class="exercise costas">
+        <div class="ex-name">Remada Unilateral com Halter <span class="ex-tag">unilateral</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+    </div>
+
+    <div class="block costas">
+      <div class="block-label">Bíceps — 2 exercícios suficientes</div>
+      <div class="exercise costas">
+        <div class="ex-name">Rosca Direta com Barra <span class="ex-tag">massa</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise costas">
+        <div class="ex-name">Rosca Martelo Alternada <span class="ex-tag">braquial</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">✂️</div>
+        <div class="tip-title">Bíceps reduzido</div>
+        <p>Saiu a rosca alternada — 3 exercícios de bíceps no mesmo dia era demais. 2 exercícios bem feitos superam 3 com fadiga.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔗</div>
+        <div class="tip-title">Escápula</div>
+        <p>Em toda puxada: deprima a escápula antes de puxar. Isso isola o grande dorsal e tira o trapézio do movimento.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📈</div>
+        <div class="tip-title">Progressão</div>
+        <p>Remada curvada é o exercício mais importante desse dia. Progrida carga aqui toda semana que conseguir.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUARTA — QUAD + GLÚTEO -->
+  <div class="day-panel" id="qua">
+    <div class="day-header">
+      <div class="day-title quad">QUAD <em>+ GLÚTEO</em></div>
+      <div class="day-stats">
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent3)">26</div>
+          <div class="stat-label">Séries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent3)">6–15</div>
+          <div class="stat-label">Rep range</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent3)">2–3</div>
+          <div class="stat-label">Min descanso</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block quad">
+      <div class="block-label">Quadríceps — Força Base</div>
+      <div class="exercise quad">
+        <div class="ex-name">Agachamento Livre com Barra <span class="ex-tag">principal</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">5–8</div>
+      </div>
+      <div class="exercise quad">
+        <div class="ex-name">Leg Press (Pé Neutro) <span class="ex-tag">volume</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+      <div class="exercise quad">
+        <div class="ex-name">Cadeira Extensora <span class="ex-tag">isolamento</span> <span class="ex-note pink">drop set na última</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block quad">
+      <div class="block-label">Glúteo — Unilateral</div>
+      <div class="exercise quad">
+        <div class="ex-name">Agachamento Búlgaro com Barra <span class="ex-tag">força uni</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise quad">
+        <div class="ex-name">Coice no Cabo (Glúteo Máximo) <span class="ex-tag">isolamento</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block neutral">
+      <div class="block-label">Panturrilha</div>
+      <div class="exercise neutral">
+        <div class="ex-name">Panturrilha em Pé (Carga Alta) <span class="ex-tag">gastrocnêmio</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps neutral">10–15</div>
+      </div>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">🏋️</div>
+        <div class="tip-title">Agachamento</div>
+        <p>Descida controlada (2–3s), joelhos seguindo a linha dos pés. Profundidade total — abaixo do paralelo ativa mais glúteo.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-title">Búlgaro</div>
+        <p>Pé da frente mais distante = mais glúteo. Pé mais próximo = mais quadríceps. Escolha conforme o foco do dia.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">💧</div>
+        <div class="tip-title">Drop Set</div>
+        <p>Na última série da extensora: chegue ao falho, reduza 30–40% da carga e continue até falhar de novo. Uma vez só.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUINTA — UPPER COMPLETO -->
+  <div class="day-panel" id="qui">
+    <div class="day-header">
+      <div class="day-title upper">UPPER <em>COMPLETO</em></div>
+      <div class="day-stats">
+        <div class="stat-box">
+          <div class="stat-num">28</div>
+          <div class="stat-label">Séries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">8–15</div>
+          <div class="stat-label">Rep range</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">90s</div>
+          <div class="stat-label">Descanso</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Peito — Novo na Ficha 🆕</div>
+      <div class="exercise">
+        <div class="ex-name">Supino Inclinado com Halter <span class="ex-tag">principal</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Crucifixo Máquina (Peck Deck) <span class="ex-tag">estiramento</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Ombro — Volume Inteligente</div>
+      <div class="exercise">
+        <div class="ex-name">Desenvolvimento com Halter <span class="ex-tag">principal</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">8–10</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Elevação Lateral com Cabo <span class="ex-tag">deltóide medial</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Face Pull com Corda <span class="ex-tag">rotador + postura</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">15–20</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Tríceps</div>
+      <div class="exercise">
+        <div class="ex-name">Tríceps Testa com Barra W <span class="ex-tag">massa</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">10–12</div>
+      </div>
+      <div class="exercise">
+        <div class="ex-name">Tríceps Corda no Cabo <span class="ex-tag">volume</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block neutral">
+      <div class="block-label">Core</div>
+      <div class="exercise neutral">
+        <div class="ex-name">Prancha Lateral <span class="ex-tag">oblíquo</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps neutral">30–40s</div>
+      </div>
+      <div class="exercise neutral">
+        <div class="ex-name">Abdominal Infra (Elevação de Pernas) <span class="ex-tag">core baixo</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps neutral">12–15</div>
+      </div>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">💪</div>
+        <div class="tip-title">Peito incluído</div>
+        <p>Peitoral sustenta o busto e melhora postura. 2 exercícios bem feitos são suficientes sem interferir no resto da ficha.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">✂️</div>
+        <div class="tip-title">Ombro simplificado</div>
+        <p>Elevação unilateral foi removida — lateral no cabo já dá estiramento e tensão constante. Qualidade > quantidade.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🛡</div>
+        <div class="tip-title">Face Pull</div>
+        <p>Protege o manguito rotador após volume de peito e ombro. Nunca pule esse exercício — prevenção de lesão real.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEXTA — GLÚTEO PUMP -->
+  <div class="day-panel" id="sex">
+    <div class="day-header">
+      <div class="day-title pump">GLÚTEO <em>PUMP</em></div>
+      <div class="day-stats">
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">22</div>
+          <div class="stat-label">Séries</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">10–20</div>
+          <div class="stat-label">Rep range</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--accent2)">60–90s</div>
+          <div class="stat-label">Descanso</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block pump">
+      <div class="block-label">Glúteo — Contração Máxima</div>
+      <div class="exercise pump">
+        <div class="ex-name">Hip Thrust na Máquina ou Barra Leve <span class="ex-tag">principal</span> <span class="ex-note pink">segura 2s no topo</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps">10–15</div>
+      </div>
+      <div class="exercise pump">
+        <div class="ex-name">Coice no Cabo <span class="ex-tag">isolamento</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">15–20</div>
+      </div>
+      <div class="exercise pump">
+        <div class="ex-name">Abdutora Leve <span class="ex-tag">glúteo médio</span> <span class="ex-note pink">segura 2s</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">20–25</div>
+      </div>
+    </div>
+
+    <div class="block pump">
+      <div class="block-label">Posterior de Coxa</div>
+      <div class="exercise pump">
+        <div class="ex-name">Stiff com Halteres <span class="ex-tag">isquio + glúteo</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+      <div class="exercise pump">
+        <div class="ex-name">Mesa Flexora <span class="ex-tag">finalizador</span></div>
+        <div class="ex-sets">3 séries</div>
+        <div class="ex-reps">12–15</div>
+      </div>
+    </div>
+
+    <div class="block neutral">
+      <div class="block-label">Panturrilha Sentado</div>
+      <div class="exercise neutral">
+        <div class="ex-name">Panturrilha Sentado (Sóleo) <span class="ex-tag">alta repetição</span></div>
+        <div class="ex-sets">4 séries</div>
+        <div class="ex-reps neutral">15–20</div>
+      </div>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon">🍑</div>
+        <div class="tip-title">Dia de pump</div>
+        <p>Carga moderada, contração máxima. O objetivo aqui é sangue no músculo, não carga máxima — diferente da segunda.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔄</div>
+        <div class="tip-title">Frog pump removido</div>
+        <p>Substituído por coice no cabo — mesma ideia de isolamento de glúteo, mas com carga progressiva real.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">⏱</div>
+        <div class="tip-title">Descanso curto</div>
+        <p>60–90s entre séries. O pump acontece com pouco descanso. Se o músculo "apagar", descansou demais.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FDS -->
+  <div class="day-panel" id="fds">
+    <div class="rest-panel">
+      <div class="rest-icon">🌸</div>
+      <div class="rest-title">FIM DE SEMANA</div>
+      <p class="rest-sub">Dois dias de descanso total. Coma bem (proteína!), hidrate-se, durma 8h. Síntese proteica de glúteo atinge pico 24–48h após a sexta — o descanso é quando o músculo de fato cresce.</p>
+    </div>
+  </div>
+
+  <!-- Progressão -->
+  <div class="overload-box">
+    <div class="overload-header">SISTEMA DE PROGRESSÃO — DOUBLE PROGRESSION</div>
+    <div class="overload-body">
+      <div class="overload-item">
+        <div class="overload-num">1°</div>
+        <div class="overload-desc">Atinja o teto de reps em todas as séries por 2 semanas seguidas</div>
+      </div>
+      <div class="overload-item">
+        <div class="overload-num">2°</div>
+        <div class="overload-desc">Hip thrust: +5 kg. Outros compostos: +2,5 kg. Isolamentos: +1 kg ou +1 série</div>
+      </div>
+      <div class="overload-item">
+        <div class="overload-num">3°</div>
+        <div class="overload-desc">Volte ao piso de reps com a nova carga e repita o ciclo</div>
+      </div>
+      <div class="overload-item">
+        <div class="overload-num">4°</div>
+        <div class="overload-desc">A cada 8–10 semanas: deload com 50–60% da carga por 1 semana inteira</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showDay(id) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+</body>
+</html>
