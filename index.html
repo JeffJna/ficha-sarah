@@ -4,6 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ficha Sarah Ariane — Glúteo & Força</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png" />
+  <meta name="theme-color" content="#09070d" />
+  <meta name="application-name" content="Ficha Sarah" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ficha Sarah" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-180.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-180.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -44,6 +56,10 @@
       position: relative;
     }
 
+    body.is-booting {
+      overflow: hidden;
+    }
+
     body::before,
     body::after {
       content: '';
@@ -73,6 +89,114 @@
     }
 
     .app { position: relative; z-index: 1; }
+
+    .boot-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(224,64,251,.18), transparent 24%),
+        radial-gradient(circle at 50% 78%, rgba(244,143,177,.14), transparent 28%),
+        linear-gradient(180deg, rgba(10, 8, 16, .98), rgba(17, 13, 23, .98));
+      transition: opacity .45s ease, visibility .45s ease;
+    }
+
+    .boot-splash.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .boot-card {
+      width: min(100%, 360px);
+      padding: 28px 24px 22px;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      backdrop-filter: blur(18px);
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+
+    .boot-icon-wrap {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 18px;
+    }
+
+    .boot-icon-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 28px;
+      border: 1px solid rgba(224,64,251,.24);
+      animation: splashPulse 1.8s ease-out infinite;
+    }
+
+    .boot-icon {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 24px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.32);
+    }
+
+    .boot-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .boot-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 7vw, 52px);
+      line-height: .95;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .boot-copy {
+      color: #d7cada;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .boot-progress {
+      position: relative;
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+    }
+
+    .boot-progress::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform-origin: left center;
+      animation: splashLoad 1.15s ease-in-out infinite;
+    }
+
+    @keyframes splashPulse {
+      0% { opacity: .8; transform: scale(.95); }
+      70% { opacity: 0; transform: scale(1.14); }
+      100% { opacity: 0; transform: scale(1.14); }
+    }
+
+    @keyframes splashLoad {
+      0% { transform: scaleX(.15); opacity: .65; }
+      55% { transform: scaleX(.82); opacity: 1; }
+      100% { transform: scaleX(1); opacity: .82; }
+    }
     .container { width: min(var(--max-width), calc(100% - 32px)); margin: 0 auto; }
 
     .hero-wrap { padding: 24px 0 16px; }
@@ -497,7 +621,8 @@
       gap: 16px;
       padding: 17px 0;
       border-bottom: 1px solid rgba(255,255,255,.05);
-      transition: transform .22s ease, padding-left .22s ease;
+      transition: transform .22s ease, padding-left .22s ease, border-color .22s ease;
+      cursor: pointer;
     }
 
     .exercise:last-child { border-bottom: none; }
@@ -505,6 +630,11 @@
     .exercise:hover {
       transform: translateX(4px);
       padding-left: 4px;
+    }
+
+    .exercise:focus-visible {
+      outline: none;
+      border-bottom-color: rgba(255,255,255,.12);
     }
 
     .exercise::before {
@@ -758,6 +888,200 @@
       line-height: 1.7;
     }
 
+    .ex-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(6, 4, 10, .72);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .28s ease;
+    }
+
+    .ex-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ex-modal {
+      position: relative;
+      width: min(100%, 760px);
+      max-height: min(88vh, 860px);
+      overflow: auto;
+      padding: 10px 22px 48px;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(15,12,20,.98), rgba(12,9,18,.98));
+      box-shadow: 0 26px 80px rgba(0,0,0,.46);
+      transform: translateY(22px);
+      transition: transform .28s ease;
+    }
+
+    .ex-modal-overlay.open .ex-modal {
+      transform: translateY(0);
+    }
+
+    .ex-modal-handle {
+      width: 44px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      margin: 10px auto 18px;
+    }
+
+    .ex-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .ex-modal-close:hover {
+      background: rgba(255,255,255,.13);
+      color: var(--text);
+      transform: rotate(90deg);
+    }
+
+    .ex-modal-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 6vw, 64px);
+      line-height: .92;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      padding-right: 44px;
+    }
+
+    .ex-modal-name.accent  { color: var(--accent); }
+    .ex-modal-name.accent2 { color: var(--accent2); }
+    .ex-modal-name.accent3 { color: var(--accent3); }
+    .ex-modal-name.neutral { color: var(--text); }
+
+    .ex-modal-muscles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .ex-muscle-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(224,64,251,.12);
+      border: 1px solid rgba(224,64,251,.22);
+      color: #f4c4ff;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .ex-muscle-tag.secondary {
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.08);
+      color: var(--muted);
+    }
+
+    .ex-modal-section { margin-bottom: 22px; }
+
+    .ex-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 12px;
+    }
+
+    .ex-cues,
+    .ex-mistakes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ex-cue {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      color: #eadcf0;
+      line-height: 1.7;
+    }
+
+    .ex-cue-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 30px;
+      line-height: .9;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .ex-mistake {
+      position: relative;
+      padding: 14px 16px 14px 40px;
+      border-radius: 18px;
+      border: 1px solid rgba(244,143,177,.12);
+      background: rgba(244,143,177,.08);
+      color: #dfc0cb;
+      line-height: 1.7;
+    }
+
+    .ex-mistake::before {
+      content: '×';
+      position: absolute;
+      top: 13px;
+      left: 16px;
+      color: #ff8cab;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .ex-modal-actions {
+      margin-top: 30px;
+    }
+
+    .ex-yt-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(224,64,251,.2);
+      background: linear-gradient(135deg, rgba(224,64,251,.16), rgba(244,143,177,.14));
+      color: #ffeefe;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .ex-yt-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(244,143,177,.28);
+      background: linear-gradient(135deg, rgba(224,64,251,.24), rgba(244,143,177,.18));
+    }
+
     @media (max-width: 1100px) {
       .hero-grid,
       .hero-meta,
@@ -907,6 +1231,23 @@
         font-size: 34px;
       }
       .rest-title { font-size: clamp(34px, 12vw, 46px); letter-spacing: 2px; }
+      .ex-modal {
+        width: calc(100% - 8px);
+        max-height: min(92vh, 860px);
+        padding: 8px 18px 44px;
+        border-radius: 24px;
+      }
+      .ex-modal-name {
+        font-size: clamp(36px, 12vw, 52px);
+      }
+      .ex-cue,
+      .ex-mistake {
+        font-size: 13px;
+      }
+      .ex-cue {
+        grid-template-columns: 28px 1fr;
+        padding: 12px 14px;
+      }
     }
 
     @media (max-width: 400px) {
@@ -940,7 +1281,18 @@
     }
   </style>
 </head>
-<body>
+<body class="is-booting">
+  <div class="boot-splash" id="bootSplash" aria-hidden="true">
+    <div class="boot-card">
+      <div class="boot-icon-wrap">
+        <img class="boot-icon" src="./icons/icon-192.png" alt="Ficha Sarah" />
+      </div>
+      <div class="boot-label">App pronta para instalar</div>
+      <div class="boot-title">Ficha Sarah</div>
+      <p class="boot-copy">Abrindo sua ficha com atalho, icone proprio e suporte offline basico.</p>
+      <div class="boot-progress"></div>
+    </div>
+  </div>
   <div class="app">
     <div class="container hero-wrap">
       <header class="hero reveal">
@@ -1241,6 +1593,29 @@
 
       <p class="footer-note reveal">Baseado no HTML enviado, com a mesma estrutura de treinos, agora modernizado visualmente e ajustado para celular. </p>
     </main>
+
+    <div class="ex-modal-overlay" id="exModal" role="dialog" aria-modal="true" aria-label="Detalhes do exercício">
+      <div class="ex-modal" id="exModalPanel">
+        <div class="ex-modal-handle"></div>
+        <button class="ex-modal-close" id="exModalClose" aria-label="Fechar">&#215;</button>
+        <div class="ex-modal-name" id="exModalName"></div>
+        <div class="ex-modal-muscles" id="exModalMuscles"></div>
+        <div class="ex-modal-section">
+          <div class="ex-section-title">Execução</div>
+          <div class="ex-cues" id="exModalCues"></div>
+        </div>
+        <div class="ex-modal-section">
+          <div class="ex-section-title">Erros comuns</div>
+          <div class="ex-mistakes" id="exModalMistakes"></div>
+        </div>
+        <div class="ex-modal-actions">
+          <a class="ex-yt-btn" id="exModalYT" href="#" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Ver no YouTube
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1319,6 +1694,657 @@
       const hero = document.querySelector('.hero');
       hero.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg)';
     });
+
+    const EXERCISES = {
+      'Hip Thrust com Barra': {
+        muscles: ['Glúteo Máximo', 'Posterior de Coxa'],
+        secondary: ['Core', 'Adutores'],
+        cues: [
+          'Apoie a parte alta das costas no banco e deixe os pés na largura do quadril.',
+          'Suba empurrando pelo calcanhar até travar o quadril com contração real do glúteo.',
+          'Mantenha queixo levemente recolhido e costelas para baixo para não roubar com a lombar.',
+          'Segure 1 a 2 segundos no topo antes de descer controlando.'
+        ],
+        mistakes: [
+          'Hiperestender a lombar no topo em vez de terminar com o quadril.',
+          'Deixar os pés muito longe ou muito perto e perder alavanca do glúteo.',
+          'Descer rápido demais e perder tensão na fase mais importante.'
+        ],
+        ytQuery: 'hip thrust com barra tecnica gluteo'
+      },
+      'Glute Bridge na Máquina': {
+        muscles: ['Glúteo Máximo'],
+        secondary: ['Posterior de Coxa', 'Core'],
+        cues: [
+          'Ajuste a máquina para empurrar com o quadril sem perder contato das costas com o apoio.',
+          'Pés firmes, joelhos alinhados e pressão constante pelo calcanhar.',
+          'Suba até a extensão do quadril sem jogar o tronco para trás.',
+          'Faça a volta devagar mantendo o glúteo ativo o tempo inteiro.'
+        ],
+        mistakes: [
+          'Bater a carga no final da descida e zerar a tensão.',
+          'Subir com impulso do tronco em vez de extensão do quadril.',
+          'Abrir ou fechar demais os joelhos durante a repetição.'
+        ],
+        ytQuery: 'glute bridge maquina execucao gluteo'
+      },
+      'Abdutora com Carga Alta': {
+        muscles: ['Glúteo Médio', 'Glúteo Mínimo'],
+        secondary: ['Tensor da Fáscia Lata'],
+        cues: [
+          'Sente alto no banco e mantenha o tronco estável durante toda a abertura.',
+          'Empurre os joelhos para fora iniciando o movimento pelo quadril.',
+          'Controle a volta sem deixar os apoios fecharem de uma vez.',
+          'Use amplitude real e pause rápido na abertura máxima.'
+        ],
+        mistakes: [
+          'Jogar o corpo para ganhar alavanca e roubar com o embalo.',
+          'Fazer só meia amplitude e encurtar o trabalho do glúteo médio.',
+          'Relaxar totalmente na volta e perder a fase excêntrica.'
+        ],
+        ytQuery: 'cadeira abdutora tecnica gluteo medio'
+      },
+      'Levantamento Terra Sumô': {
+        muscles: ['Glúteo Máximo', 'Adutores', 'Posterior de Coxa'],
+        secondary: ['Quadríceps', 'Core'],
+        cues: [
+          'Abra a base, ponta dos pés levemente para fora e mãos dentro das pernas.',
+          'Trave abdômen e dorsal antes de tirar a barra do chão.',
+          'Empurre o chão e traga o quadril para a frente sem arredondar a coluna.',
+          'Finalize em pé sem exagerar a extensão lombar.'
+        ],
+        mistakes: [
+          'Puxar com a lombar antes de organizar o tronco.',
+          'Deixar os joelhos fecharem para dentro na subida.',
+          'Subir a barra longe do corpo e aumentar o torque desnecessariamente.'
+        ],
+        ytQuery: 'levantamento terra sumo tecnica'
+      },
+      'Stiff com Barra': {
+        muscles: ['Posterior de Coxa', 'Glúteo Máximo'],
+        secondary: ['Eretores da Coluna', 'Core'],
+        cues: [
+          'Segure a barra próxima ao corpo e mantenha joelhos só levemente flexionados.',
+          'Empurre o quadril para trás durante a descida sem perder coluna neutra.',
+          'Desça até sentir alongamento forte no posterior sem colapsar a lombar.',
+          'Suba contraindo glúteo e posterior, não puxando com as costas.'
+        ],
+        mistakes: [
+          'Transformar o stiff em agachamento dobrando demais os joelhos.',
+          'Arredondar a lombar para ganhar amplitude artificial.',
+          'Afastar a barra do corpo e sobrecarregar a cadeia posterior.'
+        ],
+        ytQuery: 'stiff com barra tecnica posterior'
+      },
+      'Mesa Flexora': {
+        muscles: ['Posterior de Coxa'],
+        secondary: ['Panturrilha'],
+        cues: [
+          'Ajuste o apoio para alinhar o eixo da máquina com o joelho.',
+          'Contraia o posterior levando o rolo sem tirar o quadril do banco.',
+          'Segure um instante na contração máxima.',
+          'Retorne controlando a carga até quase estender totalmente.'
+        ],
+        mistakes: [
+          'Levantar o quadril e usar compensação para terminar a repetição.',
+          'Bater a carga na volta e perder o excêntrico.',
+          'Usar amplitude curta demais por excesso de peso.'
+        ],
+        ytQuery: 'mesa flexora execucao tecnica'
+      },
+      'Prancha com Carga': {
+        muscles: ['Core', 'Reto Abdominal', 'Transverso do Abdome'],
+        secondary: ['Glúteo', 'Serrátil'],
+        cues: [
+          'Antebraços no chão, cotovelos abaixo dos ombros e corpo em linha reta.',
+          'Faça retroversão pélvica leve e aperte glúteos para travar a lombar.',
+          'Respire curto sem perder pressão abdominal.',
+          'Mantenha a carga estável nas costas sem deixar o quadril cair.'
+        ],
+        mistakes: [
+          'Subir demais o quadril e aliviar o trabalho do abdômen.',
+          'Deixar a lombar afundar e transformar a prancha em extensão.',
+          'Prender a respiração até perder o alinhamento.'
+        ],
+        ytQuery: 'prancha com carga tecnica core'
+      },
+      'Pulldown Pegada Larga': {
+        muscles: ['Grande Dorsal', 'Redondo Maior'],
+        secondary: ['Bíceps', 'Rombóides'],
+        cues: [
+          'Comece deprimindo as escápulas antes de dobrar os cotovelos.',
+          'Puxe a barra em direção ao alto do peito com tronco levemente inclinado.',
+          'Mantenha os cotovelos apontando para baixo durante a puxada.',
+          'Suba controlando até alongar bem o dorsal.'
+        ],
+        mistakes: [
+          'Puxar para trás da cabeça e piorar o encaixe do ombro.',
+          'Jogar o tronco para trás e transformar o exercício em remada.',
+          'Fazer metade da amplitude e perder o alongamento.'
+        ],
+        ytQuery: 'pulldown pegada larga tecnica costas'
+      },
+      'Pulldown Unilateral no Cabo': {
+        muscles: ['Grande Dorsal'],
+        secondary: ['Redondo Maior', 'Core'],
+        cues: [
+          'Ajuste a polia alta e segure firme para trabalhar um lado por vez.',
+          'Pense em levar o cotovelo ao quadril mantendo o ombro longe da orelha.',
+          'Deixe o dorsal alongar no topo sem girar o tronco.',
+          'Mantenha o abdômen travado para não compensar.'
+        ],
+        mistakes: [
+          'Rodar o corpo para roubar amplitude.',
+          'Puxar com o bíceps em vez de iniciar com a escápula.',
+          'Perder controle na subida e deixar a carga arrancar o braço.'
+        ],
+        ytQuery: 'pulldown unilateral cabo tecnica dorsal'
+      },
+      'Remada Curvada com Barra': {
+        muscles: ['Grande Dorsal', 'Trapézio Médio', 'Rombóides'],
+        secondary: ['Bíceps', 'Posterior de Ombro'],
+        cues: [
+          'Incline o tronco mantendo coluna neutra e abdômen firme.',
+          'Puxe a barra para a linha do umbigo ou costela baixa.',
+          'Conduza o movimento com cotovelos e retração escapular.',
+          'Desça controlando sem perder o ângulo do tronco.'
+        ],
+        mistakes: [
+          'Subir e descer o tronco a cada repetição para ganhar impulso.',
+          'Arredondar a lombar conforme a fadiga entra.',
+          'Puxar alto demais e jogar o estímulo para trapézio superior.'
+        ],
+        ytQuery: 'remada curvada barra tecnica'
+      },
+      'Remada Sentada no Cabo': {
+        muscles: ['Rombóides', 'Trapézio Médio', 'Grande Dorsal'],
+        secondary: ['Bíceps'],
+        cues: [
+          'Sente com peito aberto e joelhos levemente flexionados.',
+          'Puxe o triângulo ou pegador para o abdômen sem encolher os ombros.',
+          'Feche bem as escápulas no final da puxada.',
+          'Volte controlando e deixando as escápulas se abrirem.'
+        ],
+        mistakes: [
+          'Jogar o tronco para trás e transformar em balanço.',
+          'Encolher os ombros durante a puxada.',
+          'Parar antes do alongamento completo na volta.'
+        ],
+        ytQuery: 'remada sentada no cabo tecnica'
+      },
+      'Remada Unilateral com Halter': {
+        muscles: ['Grande Dorsal', 'Rombóides'],
+        secondary: ['Bíceps', 'Trapézio'],
+        cues: [
+          'Apoie mão e joelho no banco mantendo a coluna longa.',
+          'Puxe o halter em direção ao quadril com cotovelo perto do corpo.',
+          'Pause um instante no topo para terminar a escápula.',
+          'Desça até alongar o dorsal sem rodar o tronco.'
+        ],
+        mistakes: [
+          'Abrir o cotovelo e jogar o foco no ombro posterior.',
+          'Girar o corpo para facilitar a subida.',
+          'Encurtar a descida e perder amplitude.'
+        ],
+        ytQuery: 'remada unilateral com halter tecnica'
+      },
+      'Rosca Direta com Barra': {
+        muscles: ['Bíceps Braquial'],
+        secondary: ['Braquial', 'Braquiorradial'],
+        cues: [
+          'Cotovelos fixos ao lado do corpo e punhos neutros.',
+          'Suba a barra sem jogar os ombros para frente.',
+          'Contraia forte no topo sem perder o controle.',
+          'Desça lentamente para aproveitar o excêntrico.'
+        ],
+        mistakes: [
+          'Roubar com balanço de quadril e lombar.',
+          'Trazer os cotovelos para frente e aliviar o bíceps.',
+          'Despencar a barra na descida.'
+        ],
+        ytQuery: 'rosca direta com barra tecnica biceps'
+      },
+      'Rosca Martelo Alternada': {
+        muscles: ['Braquial', 'Braquiorradial'],
+        secondary: ['Bíceps Braquial'],
+        cues: [
+          'Mantenha pegada neutra do início ao fim.',
+          'Suba um braço por vez sem mexer o cotovelo para frente.',
+          'Deixe o punho firme e o ombro relaxado.',
+          'Controle a descida até quase estender completamente.'
+        ],
+        mistakes: [
+          'Girar o punho e descaracterizar a rosca martelo.',
+          'Usar balanço do tronco para iniciar a subida.',
+          'Encerrar a amplitude antes do alongamento.'
+        ],
+        ytQuery: 'rosca martelo alternada tecnica'
+      },
+      'Agachamento Livre com Barra': {
+        muscles: ['Quadríceps', 'Glúteo Máximo'],
+        secondary: ['Adutores', 'Core'],
+        cues: [
+          'Posicione os pés firmes no chão e crie pressão abdominal antes de descer.',
+          'Quebre joelhos e quadril ao mesmo tempo mantendo o peito organizado.',
+          'Desça até a profundidade que preserve coluna e joelhos alinhados.',
+          'Suba empurrando o chão sem deixar os joelhos colapsarem.'
+        ],
+        mistakes: [
+          'Perder tensão no core e dobrar o tronco em excesso.',
+          'Joelhos entrando para dentro na saída do buraco.',
+          'Cortar amplitude por pressa ou excesso de carga.'
+        ],
+        ytQuery: 'agachamento livre com barra tecnica'
+      },
+      'Leg Press (Pé Neutro)': {
+        muscles: ['Quadríceps', 'Glúteo Máximo'],
+        secondary: ['Posterior de Coxa'],
+        cues: [
+          'Pés na largura dos ombros em posição neutra na plataforma.',
+          'Desça controlando até o limite em que a lombar fique colada no banco.',
+          'Empurre a plataforma distribuindo força no pé inteiro.',
+          'Mantenha joelhos acompanhando a linha dos pés.'
+        ],
+        mistakes: [
+          'Soltar a lombar do banco para forçar amplitude.',
+          'Travar os joelhos com agressividade no topo.',
+          'Descer curto demais e perder trabalho efetivo do quadríceps.'
+        ],
+        ytQuery: 'leg press pe neutro tecnica'
+      },
+      'Cadeira Extensora': {
+        muscles: ['Quadríceps'],
+        secondary: [],
+        cues: [
+          'Ajuste o encosto e o rolo para o joelho alinhar com o eixo da máquina.',
+          'Suba estendendo os joelhos sem tirar o quadril do banco.',
+          'Segure um instante na contração máxima.',
+          'Retorne em 2 a 3 segundos sem perder tensão.'
+        ],
+        mistakes: [
+          'Balançar o tronco para completar as últimas repetições.',
+          'Bater a carga na descida e descansar entre reps.',
+          'Usar carga tão alta que encurte muito a amplitude.'
+        ],
+        ytQuery: 'cadeira extensora tecnica quadriceps'
+      },
+      'Agachamento Búlgaro com Barra': {
+        muscles: ['Quadríceps', 'Glúteo Máximo'],
+        secondary: ['Glúteo Médio', 'Core'],
+        cues: [
+          'Deixe o pé da frente distante o suficiente para descer com estabilidade.',
+          'Mantenha o tronco levemente inclinado se quiser mais glúteo.',
+          'Desça em linha reta até o joelho traseiro aproximar do chão.',
+          'Suba empurrando o solo com a perna da frente.'
+        ],
+        mistakes: [
+          'Apoiar força demais na perna de trás e aliviar a principal.',
+          'Encurtar a passada e jogar o joelho muito à frente.',
+          'Perder equilíbrio por falta de base e pressa.'
+        ],
+        ytQuery: 'agachamento bulgaro com barra tecnica'
+      },
+      'Coice no Cabo (Glúteo Máximo)': {
+        muscles: ['Glúteo Máximo'],
+        secondary: ['Posterior de Coxa'],
+        cues: [
+          'Incline o tronco levemente à frente e trave o abdômen.',
+          'Empurre a perna para trás e para cima com joelho levemente flexionado.',
+          'Pense em contrair o glúteo no final, não em balançar a perna.',
+          'Volte lentamente sem deixar a polia puxar de uma vez.'
+        ],
+        mistakes: [
+          'Arquear a lombar para aparentar mais amplitude.',
+          'Usar embalo do tronco para iniciar a repetição.',
+          'Abrir demais o quadril e tirar o foco do glúteo máximo.'
+        ],
+        ytQuery: 'coice no cabo gluteo maximo tecnica'
+      },
+      'Panturrilha em Pé (Carga Alta)': {
+        muscles: ['Gastrocnêmio'],
+        secondary: ['Sóleo'],
+        cues: [
+          'Apoie o antepé e deixe o calcanhar descer ao máximo com controle.',
+          'Suba empurrando o chão e terminando na ponta do pé.',
+          'Segure um instante na contração máxima.',
+          'Mantenha joelhos apenas destravados, sem rebolar o corpo.'
+        ],
+        mistakes: [
+          'Quicar na parte baixa e perder o trabalho muscular.',
+          'Usar amplitude parcial por excesso de carga.',
+          'Dobrar demais os joelhos e tirar foco do gastrocnêmio.'
+        ],
+        ytQuery: 'panturrilha em pe carga alta tecnica'
+      },
+      'Supino Inclinado com Halter': {
+        muscles: ['Peitoral Superior'],
+        secondary: ['Tríceps', 'Deltóide Anterior'],
+        cues: [
+          'Escápulas retraídas e pés firmes no chão antes de iniciar.',
+          'Desça os halteres em arco controlado para a linha superior do peito.',
+          'Mantenha punhos neutros e cotovelos em ângulo confortável.',
+          'Suba aproximando os halteres sem bater um no outro.'
+        ],
+        mistakes: [
+          'Perder a posição das escápulas e jogar o ombro para frente.',
+          'Abrir demais os cotovelos e piorar o encaixe do ombro.',
+          'Descer curto demais e perder o alongamento do peitoral.'
+        ],
+        ytQuery: 'supino inclinado com halter tecnica'
+      },
+      'Crucifixo Máquina (Peck Deck)': {
+        muscles: ['Peitoral Maior'],
+        secondary: ['Deltóide Anterior'],
+        cues: [
+          'Ajuste o banco para alinhar mãos ou antebraços à linha do peito.',
+          'Feche os braços abraçando o movimento com o peitoral.',
+          'Mantenha leve flexão dos cotovelos do início ao fim.',
+          'Retorne controlando até sentir alongamento sem perder a postura.'
+        ],
+        mistakes: [
+          'Empurrar com tríceps como se fosse supino.',
+          'Bater os braços no final e usar impulso.',
+          'Exagerar na abertura e forçar a frente do ombro.'
+        ],
+        ytQuery: 'peck deck crucifixo maquina tecnica'
+      },
+      'Desenvolvimento com Halter': {
+        muscles: ['Deltóide Anterior', 'Deltóide Lateral'],
+        secondary: ['Tríceps', 'Core'],
+        cues: [
+          'Sente ou fique em pé com abdômen firme e halteres na linha do ombro.',
+          'Empurre para cima mantendo antebraço alinhado sob a carga.',
+          'Suba sem encolher os ombros.',
+          'Desça controlado até posição forte para repetir.'
+        ],
+        mistakes: [
+          'Arquear demais a lombar para concluir as repetições.',
+          'Deixar os cotovelos muito atrás e forçar o ombro.',
+          'Bater os halteres no topo e perder controle.'
+        ],
+        ytQuery: 'desenvolvimento com halter tecnica ombro'
+      },
+      'Elevação Lateral com Cabo': {
+        muscles: ['Deltóide Lateral'],
+        secondary: ['Supraespinal'],
+        cues: [
+          'Comece com braço levemente à frente do tronco e cotovelo semi flexionado.',
+          'Eleve o braço até a linha do ombro guiando pelo cotovelo.',
+          'Mantenha punho neutro e ombro longe da orelha.',
+          'Desça devagar sem deixar a polia puxar o braço.'
+        ],
+        mistakes: [
+          'Subir com trapézio em vez de lateral.',
+          'Jogar o tronco para criar embalo.',
+          'Girar a mão como se fosse despejar água e irritar o ombro.'
+        ],
+        ytQuery: 'elevacao lateral com cabo tecnica'
+      },
+      'Face Pull com Corda': {
+        muscles: ['Deltóide Posterior', 'Trapézio Médio', 'Manguito Rotador'],
+        secondary: ['Rombóides'],
+        cues: [
+          'Puxe a corda em direção ao rosto com cotovelos altos.',
+          'Abra as mãos no final para incluir rotação externa.',
+          'Mantenha peito aberto e pescoço relaxado.',
+          'Retorne controlando sem perder a posição das escápulas.'
+        ],
+        mistakes: [
+          'Puxar para o peito e descaracterizar o ângulo do exercício.',
+          'Usar carga alta demais e perder a rotação externa.',
+          'Encolher os ombros durante todo o movimento.'
+        ],
+        ytQuery: 'face pull com corda tecnica'
+      },
+      'Tríceps Testa com Barra W': {
+        muscles: ['Tríceps'],
+        secondary: ['Ancôneo'],
+        cues: [
+          'Mantenha braços estáveis apontando para o teto.',
+          'Flexione os cotovelos trazendo a barra na direção da testa ou atrás dela.',
+          'Evite abrir demais os cotovelos durante a descida.',
+          'Estenda de volta focando em empurrar com o tríceps.'
+        ],
+        mistakes: [
+          'Mover o ombro inteiro e transformar em pullover.',
+          'Abrir muito os cotovelos e irritar a articulação.',
+          'Descer rápido demais sem controle.'
+        ],
+        ytQuery: 'triceps testa barra w tecnica'
+      },
+      'Tríceps Corda no Cabo': {
+        muscles: ['Tríceps'],
+        secondary: ['Core'],
+        cues: [
+          'Cotovelos colados ao tronco e peito aberto.',
+          'Empurre a corda para baixo separando as pontas no final.',
+          'Segure a extensão por um instante para terminar o tríceps.',
+          'Retorne até alongar sem deixar o ombro participar.'
+        ],
+        mistakes: [
+          'Trazer os cotovelos para frente a cada repetição.',
+          'Usar tronco e balanço para vencer a carga.',
+          'Parar a subida cedo e perder o alongamento.'
+        ],
+        ytQuery: 'triceps corda no cabo tecnica'
+      },
+      'Prancha Lateral': {
+        muscles: ['Oblíquos', 'Core', 'Glúteo Médio'],
+        secondary: ['Quadrado Lombar'],
+        cues: [
+          'Apoie o antebraço abaixo do ombro e alinhe o corpo de lado.',
+          'Eleve o quadril formando uma linha da cabeça aos pés.',
+          'Mantenha glúteo e abdômen ativos sem girar o tronco.',
+          'Respire curto preservando a postura.'
+        ],
+        mistakes: [
+          'Deixar o quadril cair e sobrecarregar a lombar.',
+          'Rodar o tronco para frente ou para trás.',
+          'Apoiar peso demais no ombro por falta de alinhamento.'
+        ],
+        ytQuery: 'prancha lateral tecnica obliquos'
+      },
+      'Abdominal Infra (Elevação de Pernas)': {
+        muscles: ['Reto Abdominal', 'Flexores do Quadril'],
+        secondary: ['Oblíquos'],
+        cues: [
+          'Comece com lombar apoiada e pelve levemente em retroversão.',
+          'Eleve as pernas ou joelhos sem usar embalo.',
+          'No topo, pense em enrolar a pelve para acentuar o abdômen.',
+          'Desça devagar sem perder o controle da lombar.'
+        ],
+        mistakes: [
+          'Balançar as pernas para ganhar impulso.',
+          'Deixar a lombar arquear na descida.',
+          'Subir só com flexor do quadril e sem enrolar a pelve.'
+        ],
+        ytQuery: 'abdominal infra elevacao de pernas tecnica'
+      },
+      'Hip Thrust na Máquina ou Barra Leve': {
+        muscles: ['Glúteo Máximo'],
+        secondary: ['Posterior de Coxa'],
+        cues: [
+          'Organize o setup para conseguir contração máxima com conforto no quadril.',
+          'Faça a subida forte e pause 2 segundos no topo como a ficha pede.',
+          'Mantenha costelas baixas e olhar à frente.',
+          'Desça sob controle sem deixar a tensão desaparecer.'
+        ],
+        mistakes: [
+          'Acelerar demais o ritmo e perder o pump do exercício.',
+          'Transformar a pausa em descanso relaxando o quadril.',
+          'Arquear a lombar para parecer que subiu mais.'
+        ],
+        ytQuery: 'hip thrust maquina tecnica gluteo'
+      },
+      'Coice no Cabo': {
+        muscles: ['Glúteo Máximo'],
+        secondary: ['Glúteo Médio'],
+        cues: [
+          'Incline um pouco o tronco e mantenha o abdômen travado.',
+          'Empurre a perna para trás com controle e sem girar o quadril.',
+          'Contraia o glúteo no final do movimento.',
+          'Volte devagar para manter o pump constante.'
+        ],
+        mistakes: [
+          'Usar muita carga e perder a linha do movimento.',
+          'Balançar o corpo para ganhar impulso.',
+          'Abrir o quadril e tirar o foco do glúteo.'
+        ],
+        ytQuery: 'coice no cabo gluteo tecnica'
+      },
+      'Abdutora Leve': {
+        muscles: ['Glúteo Médio'],
+        secondary: ['Glúteo Mínimo'],
+        cues: [
+          'Use ritmo contínuo e foco na contração, não em carga alta.',
+          'Abra os joelhos até onde consiga manter o quadril estável.',
+          'Segure 1 a 2 segundos na abertura máxima.',
+          'Volte devagar sem encostar totalmente.'
+        ],
+        mistakes: [
+          'Bater repetições rápidas e perder o controle.',
+          'Jogar o tronco para trás para aumentar amplitude.',
+          'Fechar tudo na volta e zerar a tensão.'
+        ],
+        ytQuery: 'abdutora leve tecnica gluteo medio'
+      },
+      'Stiff com Halteres': {
+        muscles: ['Posterior de Coxa', 'Glúteo Máximo'],
+        secondary: ['Eretores da Coluna'],
+        cues: [
+          'Deixe os halteres próximos às pernas durante toda a descida.',
+          'Empurre o quadril para trás com joelhos pouco flexionados.',
+          'Alongue o posterior mantendo peito aberto e coluna neutra.',
+          'Suba trazendo o quadril para a frente e contraindo glúteos.'
+        ],
+        mistakes: [
+          'Afastar os halteres do corpo e sobrecarregar lombar.',
+          'Dobrar demais os joelhos e descaracterizar o hinge.',
+          'Roubar com a lombar no final da subida.'
+        ],
+        ytQuery: 'stiff com halteres tecnica'
+      },
+      'Panturrilha Sentado (Sóleo)': {
+        muscles: ['Sóleo'],
+        secondary: ['Gastrocnêmio'],
+        cues: [
+          'Mantenha joelhos dobrados e antepé bem apoiado.',
+          'Desça o calcanhar até sentir alongamento completo da panturrilha.',
+          'Suba o máximo possível e segure um instante no topo.',
+          'Trabalhe com ritmo controlado, principalmente na descida.'
+        ],
+        mistakes: [
+          'Quicar no fundo e usar só elasticidade.',
+          'Fazer amplitude curta por excesso de carga.',
+          'Acelerar demais a execução e perder tensão no sóleo.'
+        ],
+        ytQuery: 'panturrilha sentado soleo tecnica'
+      }
+    };
+
+    const exModalOverlay = document.getElementById('exModal');
+    const exModalClose = document.getElementById('exModalClose');
+    const exModalName = document.getElementById('exModalName');
+    const exModalMuscles = document.getElementById('exModalMuscles');
+    const exModalCues = document.getElementById('exModalCues');
+    const exModalMistakes = document.getElementById('exModalMistakes');
+    const exModalYT = document.getElementById('exModalYT');
+    let lastExerciseTrigger = null;
+
+    function getExerciseName(exerciseEl) {
+      const nameEl = exerciseEl.querySelector('.ex-name');
+      if (!nameEl) return '';
+      return [...nameEl.childNodes]
+        .filter(node => node.nodeType === Node.TEXT_NODE)
+        .map(node => node.textContent.trim())
+        .join(' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function getExerciseModalTone(exerciseEl) {
+      if (exerciseEl.classList.contains('pump') || exerciseEl.classList.contains('costas')) return 'accent2';
+      if (exerciseEl.classList.contains('quad')) return 'accent3';
+      if (exerciseEl.classList.contains('neutral')) return 'neutral';
+      return 'accent';
+    }
+
+    function openExModal(exerciseEl, data) {
+      const name = getExerciseName(exerciseEl);
+      if (!name || !data) return;
+
+      lastExerciseTrigger = exerciseEl;
+      exModalName.textContent = name;
+      exModalName.className = `ex-modal-name ${getExerciseModalTone(exerciseEl)}`;
+      exModalMuscles.innerHTML =
+        data.muscles.map(muscle => `<span class="ex-muscle-tag">${muscle}</span>`).join('') +
+        (data.secondary || []).map(muscle => `<span class="ex-muscle-tag secondary">${muscle}</span>`).join('');
+      exModalCues.innerHTML = data.cues.map((cue, index) =>
+        `<div class="ex-cue"><span class="ex-cue-num">${index + 1}</span><span>${cue}</span></div>`
+      ).join('');
+      exModalMistakes.innerHTML = data.mistakes.map(mistake =>
+        `<div class="ex-mistake"><span>${mistake}</span></div>`
+      ).join('');
+      exModalYT.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(data.ytQuery || name)}`;
+
+      exModalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('exModalPanel').scrollTop = 0;
+    }
+
+    function closeExModal() {
+      exModalOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastExerciseTrigger) lastExerciseTrigger.focus();
+    }
+
+    document.querySelectorAll('.exercise').forEach(exerciseEl => {
+      const name = getExerciseName(exerciseEl);
+      const data = EXERCISES[name];
+      if (!data) return;
+
+      exerciseEl.setAttribute('role', 'button');
+      exerciseEl.setAttribute('tabindex', '0');
+      exerciseEl.setAttribute('aria-label', `Abrir detalhes de ${name}`);
+
+      exerciseEl.addEventListener('click', () => openExModal(exerciseEl, data));
+      exerciseEl.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        openExModal(exerciseEl, data);
+      });
+    });
+
+    exModalClose.addEventListener('click', closeExModal);
+    exModalOverlay.addEventListener('click', event => {
+      if (event.target === exModalOverlay) closeExModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && exModalOverlay.classList.contains('open')) {
+        closeExModal();
+      }
+    });
+
+    const bootSplash = document.getElementById('bootSplash');
+    const hideBootSplash = () => {
+      if (!bootSplash || bootSplash.classList.contains('is-hidden')) return;
+      bootSplash.classList.add('is-hidden');
+      document.body.classList.remove('is-booting');
+    };
+
+    window.addEventListener('load', () => {
+      window.setTimeout(hideBootSplash, 550);
+    });
+
+    window.setTimeout(hideBootSplash, 2200);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.error('Falha ao registrar service worker:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>
