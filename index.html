@@ -2208,9 +2208,187 @@
         </div>
       </section>
 
-      <p class="footer-note reveal gradient-text">
-  Feito com amor para meu amor, pra quem faz minha vida melhor todos os dias 💜
-</p>
+      <div class="footer-love-wrap reveal">
+  <div class="footer-love-line"></div>
+  
+  <p class="footer-note footer-love-text">
+    <span id="typing-love"></span><span class="typing-caret"></span>
+  </p>
+
+  <p class="footer-subnote">feito com carinho, disciplina e propósito</p>
+</div>
+
+<style>
+.footer-love-wrap {
+  position: relative;
+  margin-top: 40px;
+  padding: 22px 18px 18px;
+  border: 1px solid rgba(200, 245, 66, 0.18);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top center, rgba(200, 245, 66, 0.08), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  overflow: hidden;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02) inset,
+    0 8px 30px rgba(0,0,0,0.35);
+}
+
+.footer-love-line {
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c8f542, #f5a623, transparent);
+  filter: blur(0.5px);
+  animation: scanLine 4s linear infinite;
+  opacity: 0.95;
+}
+
+.footer-love-text {
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  min-height: 48px;
+  color: #f3f7da;
+  text-shadow: 0 0 8px rgba(200, 245, 66, 0.08);
+  transition: all 0.4s ease;
+}
+
+.footer-love-text.glow-finished {
+  animation: finalGlow 2.2s ease-in-out infinite alternate;
+}
+
+.footer-subnote {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.42);
+}
+
+.typing-caret {
+  display: inline-block;
+  width: 10px;
+  margin-left: 2px;
+  color: #c8f542;
+  animation: blinkCaret 0.8s infinite;
+}
+
+.love-heart {
+  display: inline-block;
+  margin-left: 6px;
+  animation: heartBeat 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(224, 64, 251, 0.28));
+}
+
+@keyframes blinkCaret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes scanLine {
+  0%   { left: -35%; }
+  100% { left: 105%; }
+}
+
+@keyframes finalGlow {
+  from {
+    text-shadow:
+      0 0 8px rgba(200, 245, 66, 0.15),
+      0 0 14px rgba(200, 245, 66, 0.08);
+  }
+  to {
+    text-shadow:
+      0 0 10px rgba(200, 245, 66, 0.35),
+      0 0 22px rgba(245, 166, 35, 0.18),
+      0 0 32px rgba(200, 245, 66, 0.12);
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.18); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.16); }
+  60% { transform: scale(1); }
+}
+
+.footer-love-wrap.show-love {
+  animation: revealLove 1s ease both;
+}
+
+@keyframes revealLove {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-love-wrap {
+    padding: 18px 14px 16px;
+    border-radius: 16px;
+  }
+
+  .footer-love-text {
+    font-size: 13px;
+    min-height: 60px;
+  }
+
+  .footer-subnote {
+    font-size: 10px;
+    letter-spacing: 1.7px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const wrap = document.querySelector(".footer-love-wrap");
+  const target = document.getElementById("typing-love");
+  const caret = document.querySelector(".typing-caret");
+  const textContainer = document.querySelector(".footer-love-text");
+
+  const fullText = "Feito com amor para meu amor, pra quem faz minha vida melhor todos os dias";
+  let index = 0;
+  let started = false;
+
+  function typeText() {
+    if (index < fullText.length) {
+      target.innerHTML += fullText.charAt(index);
+      index++;
+      setTimeout(typeText, 34);
+    } else {
+      target.innerHTML += '<span class="love-heart">💜</span>';
+      textContainer.classList.add("glow-finished");
+      caret.style.display = "none";
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        wrap.classList.add("show-love");
+        setTimeout(typeText, 450);
+      }
+    });
+  }, { threshold: 0.45 });
+
+  observer.observe(wrap);
+});
+</script>
 
 <style>
 .gradient-text {
